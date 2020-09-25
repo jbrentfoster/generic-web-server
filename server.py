@@ -64,11 +64,13 @@ class AjaxHandler(tornado.web.RequestHandler):
         for ws in open_websockets:
             ws.send_message(message)
 
+
 class ResponseHandler(tornado.web.RequestHandler):
 
     def get(self):
         response = methods.get_response()
         self.render("templates/response_template.html", response=response)
+
 
 class ReferencesHandler(tornado.web.RequestHandler):
 
@@ -100,8 +102,7 @@ class WebSocket(tornado.websocket.WebSocketHandler):
             result = traceback.format_exc()
             error = 1
 
-        json_rpc_response = json.dumps({"result": result, "error": error,
-                                        "id": json_rpc["id"]},
+        json_rpc_response = json.dumps({"response": result, "error": error},
                                        separators=(",", ":"))
         logging.info("Websocket replied with message: " + json_rpc_response)
         self.write_message(json_rpc_response)

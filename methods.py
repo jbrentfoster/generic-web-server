@@ -12,7 +12,7 @@ def send_request(ajax_handler, request):
     response_json_list = []
     try:
         ajax_handler.send_message_open_ws("Sending REST call..")
-        response = utils.rest_get_json(request['url'], "","foo", "bar")
+        response = utils.rest_get_json(request['url'], "", "foo", "bar")
         response_json = json.loads(response)
         if type(response_json) is dict:
             response_json_list.append(response_json)
@@ -37,3 +37,8 @@ def get_response():
         response = json.load(f)
         f.close()
     return json.dumps(response)
+
+
+def process_ws_message(message):
+    response = "Got the message from websocket, here's my reply"
+    return response

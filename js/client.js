@@ -11,6 +11,12 @@
         return false;
     });
 
+    $("#ws-btn").on("click", function() {
+        buttonpressed = $(this);
+        btn_text = buttonpressed.text();
+        client.sendSocketMessage("Process this test message");
+    });
+
     //Function for hiding bootstrap alerts
     $(function(){
         $("[data-hide]").on("click", function(){
@@ -92,7 +98,7 @@ var client = {
     // Connects to Python through the websocket
     connect: function (port) {
         var self = this;
-        console.log("Opening websocket to ws://" + window.location.hostname + ":" + port + "/websocket")
+        console.log("Opening websocket to ws://" + window.location.hostname + ":" + port + "/websocket");
         this.socket = new WebSocket("ws://" + window.location.hostname + ":" + port + "/websocket");
 
         this.socket.onopen = function () {
@@ -124,6 +130,10 @@ var client = {
                 waitForSocketConnection(callback);
             }
         }, 5); // wait 5 milisecond for the connection...
+    },
+
+    sendSocketMessage: function(message) {
+         this.socket.send(JSON.stringify({method: "process_ws_message", params: {message: message}}));
     },
 
     buildResponseTable: function (results_data) {
