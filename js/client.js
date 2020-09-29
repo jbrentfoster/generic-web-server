@@ -30,7 +30,7 @@
 
 function call_rest(form) {
     var message = form.form2Dict();
-    var btn = $("#collect-btn");
+    var btn = $("#ajax-btn");
     var btn_spinner_html = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner"></span>Test REST';
     btn.html(btn_spinner_html);
     btn.attr("disabled","disabled");
@@ -43,7 +43,9 @@ function call_rest(form) {
         else {
             $('#completed').show();
         }
-        $("#updatefield").append(response.status + "<br>");
+        $("#updatefield").append("Server replied with status: " + response.status + "<br>");
+        $("#updatefield").append("Response body: " + "<br>");
+        $("#updatefield").append(response.body + "<br>");
         var textfield = document.getElementById('textfield');
         textfield.scrollTop = textfield.scrollHeight;
         console.log(response);

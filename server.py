@@ -28,7 +28,7 @@ open_websockets = []
 class IndexHandler(tornado.web.RequestHandler):
 
     async def get(self):
-        self.render("templates/index.html", port=args.port, initial_url=initial_url)
+        await self.render("templates/index.html", port=args.port, initial_url=initial_url)
 
 
 class AjaxHandler(tornado.web.RequestHandler):
@@ -50,10 +50,14 @@ class AjaxHandler(tornado.web.RequestHandler):
             response = {'status': 'failed', 'error': err}
             logging.info(response)
             self.write(json.dumps(response))
+            return
 
         if action == 'send-request':
             initial_url = request['url']
-            methods.send_request(self, request)
+            # methods.send_request(self, request)
+            response_body = await methods.send_async_request(initial_url, "foo", "bar")
+            response = {'action': 'collect', 'status': 'completed', 'body': str(response_body)}
+            self.write(json.dumps(response))
         else:
             logging.warning("Received request for unknown operation!")
             response = {'status': 'unknown', 'error': "unknown request"}
