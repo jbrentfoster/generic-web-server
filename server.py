@@ -18,7 +18,6 @@ import logging
 from distutils.dir_util import copy_tree
 from distutils.dir_util import remove_tree
 from distutils.dir_util import mkpath
-import time
 
 # global variables...
 initial_url = "https://jsonplaceholder.typicode.com/posts"
@@ -54,7 +53,7 @@ class AjaxHandler(tornado.web.RequestHandler):
 
         if action == 'send-request':
             initial_url = request['url']
-            # methods.send_request(self, request)
+            clean_files()
             response_body = await methods.send_async_request(initial_url, "foo", "bar")
             response = {'action': 'collect', 'status': 'completed', 'body': str(response_body)}
             self.write(json.dumps(response))
