@@ -54,8 +54,8 @@ class AjaxHandler(tornado.web.RequestHandler):
         if action == 'send-request':
             initial_url = request['url']
             clean_files()
-            response_body = await methods.send_async_request(initial_url, "foo", "bar")
-            response = {'action': 'collect', 'status': 'completed', 'body': str(response_body)}
+            response = await methods.send_async_request(initial_url, "foo", "bar")
+            # response = {'action': 'collect', 'status': 'completed', 'body': str(response_body)}
             self.write(json.dumps(response))
         else:
             logging.warning("Received request for unknown operation!")

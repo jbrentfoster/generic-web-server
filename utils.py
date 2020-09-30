@@ -21,8 +21,9 @@ async def rest_get_tornado_httpclient(url, user, password):
             error_message = "Failed HTTP response...code: " + response.code
             return error_message
     except Exception as err:
-        print("Error: %s" % err)
-        return "BAD URL"
+        error_message = "Error: %s" % err
+        logging.error(error_message)
+        return error_message
 
 
 # TODO: switch this to tornado

@@ -15,11 +15,12 @@ async def send_async_request(url, user, password):
             # json.dump(response, f, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(response)
             f.close()
-        return response
+        result = {'action': 'collect', 'status': 'completed', 'body': response}
+        return result
     except Exception as err:
-        result = {'action': 'collect', 'status': 'failed'}
+        result = {'action': 'collect', 'status': 'failed', 'body': response}
         logging.info(response)
-        return "Something went wrong!"
+        return result
 
 
 def get_response():
