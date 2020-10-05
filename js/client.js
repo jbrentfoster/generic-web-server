@@ -36,7 +36,7 @@ function call_rest(form) {
     btn.attr("disabled","disabled");
     $("#updatefield").append("Sending URL to server to execute request...<br>");
     jQuery().postJSON("/ajax", message, function(response) {
-        console.log("Callback!!!");
+        console.log("Inspecting response...");
         if (response.status == 'failed') {
             $('#failed').show();
         }
@@ -67,14 +67,19 @@ jQuery.fn.extend({
         return json;
     },
     postJSON: function(url, args, callback) {
-        json_body = JSON.stringify(args);
-        $.ajax({url: url, data: json_body, processData: false, type: "POST",
-                success: function(response) {
-                    if (callback) callback(JSON.parse(response));
-                },
-                error: function(response) {
-                    console.log("ERROR:", response);
-                }
+        var settings = {
+          "url": url,
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data":JSON.stringify(args),
+        };
+        $.ajax(settings).done(function (response) {
+            console.log("Received response from AJAX call, executing callback...");
+            if (callback) callback(JSON.parse(response));
         });
     },
     cleanJSON: function(the_json) {
