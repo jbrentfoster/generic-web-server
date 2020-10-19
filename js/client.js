@@ -7,7 +7,8 @@
     //Functions for form submission
     $("#collectform").on("submit", function() {
         console.log("Collection button collect-btn called from form submit!");
-        call_rest($(this));
+        var btn = $("#ajax-btn");
+        call_rest($(this),btn);
         return false;
     });
 
@@ -28,10 +29,10 @@
  });
 
 
-function call_rest(form) {
+function call_rest(form, btn) {
     var message = form.form2Dict();
-    var btn = $("#ajax-btn");
-    var btn_spinner_html = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner"></span>Test REST';
+    var btn_text = btn.text();
+    var btn_spinner_html = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner"></span>' + btn_text;
     btn.html(btn_spinner_html);
     btn.attr("disabled","disabled");
     $("#updatefield").append("Sending URL to server to execute request...<br>");
@@ -50,7 +51,7 @@ function call_rest(form) {
         textfield.scrollTop = textfield.scrollHeight;
         console.log(response);
         btn.empty();
-        btn.text("Test REST");
+        btn.text(btn_text);
         btn.removeAttr("disabled");
     });
 }
